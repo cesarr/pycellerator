@@ -1,4 +1,5 @@
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 from libsbml import *
 reader = SBMLReader()
 SBML = reader.readSBML("../../BMDB/BM0001.xml")

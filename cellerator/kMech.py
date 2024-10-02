@@ -43,7 +43,7 @@ We have developed an enzyme mechanism language for the mathematical modeling of 
 
 
 """
-
+from __future__ import absolute_import, division, print_function, unicode_literals
 from utils import *
 
 def getRatesFor(rates, kindofrate):

@@ -33,6 +33,8 @@
 #
 # Expand a reaction into its base constituent reactions 
 #
+
+from __future__ import absolute_import, division, print_function, unicode_literals
 import datetime
 from cellerator.parser import *
 from utils import *

@@ -32,6 +32,7 @@
 #****************************************************************************
 #
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 from pyparsing import *
 import os.path
 import sys, datetime
@@ -162,8 +163,7 @@ class Reaction(object):
             def _chop_rates(r, nexpected):
                 if len(r)>nexpected:
                    r = r[:nexpected]
-                   print "Warning: too many rates specified in the reaction ",\
-                         raw
+                   print("Warning: too many rates specified in the reaction ", raw)
                 return r       
             
             # print "DBG: CheckRates: rates: ", rates

@@ -42,6 +42,7 @@
 #
 # runSimulation(filename, duration=value, step=value)
 #
+from __future__ import absolute_import, division, print_function, unicode_literals
 import os.path, sys, datetime
 from cellerator.parser import Reaction
 from sympy import *
