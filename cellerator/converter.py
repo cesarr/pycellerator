@@ -27,7 +27,7 @@
 #****************************************************************************
 
 
-from parser import Reaction
+from cellerator.parser import Reaction
 import os.path
 import re
 import sys

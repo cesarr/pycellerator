@@ -31,7 +31,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>
 #    
 #****************************************************************************
-import parser
+# from __future__ import absolute_import, division, print_function, unicode_literals
+import sys
+import cellerator.parser as parser
 import converter
 import interpreter
 import solver
@@ -73,20 +75,20 @@ def PrintODES(model):
 	To get the ODES as a string rather than printing the use 
 	the fuction getODES(file) instead of printODES."""
 	s=interpreter.interpret(model)
-	print s
+	print(s)
 	
 	
 def PrintModel(model):
     """printModel(model) will read and print a model file
     """
     try:
-	    with open(model, "r") as f:
-		    text = f.readlines()
-	    text = "".join(text)
-	    print text
+        with open(model, "r") as f:
+            text = f.readlines()
+        text = "".join(text)
+        print(text)
     except:
-        print "Error: unable to open "+os.path.abspath(model)+"\n"\
-        +"check spelling and try again"
+        print(("Error: unable to open "+os.path.abspath(model)+"\n"\
+        +"check spelling and try again"))
 
 ######################################################
 
@@ -136,20 +138,18 @@ Return value: when run=True (default)
     
     hold=[]
     if len(scan)>0:
-		if len(scan) == 4:
-			scanparameter, scanstart, scanstop, scandelta = scan
-			hold=[scanparameter]
-			if not isinstance(scanparameter,str):
-				sys.exit("Error: expecting a string for the name of the scan parameter")
-		else:
-			sys.exit("Error: expeciting scan=['parameter',start,stop,delta]")
-
+        if len(scan) == 4:
+            scanparameter, scanstart, scanstop, scandelta = scan
+            hold = [scanparameter]
+            if not isinstance(scanparameter, str):
+                sys.exit("Error: expecting a string for the name of the scan parameter")
+        else:
+            sys.exit("Error: expecting scan=['parameter',start,stop,delta]")
     
+        # if invoked from command line, "solver -in filename -run duration step"
     
-    # if invoked from command line, "solver -in filename -run duration step"
-    
-    if timer:
-        ttimer=time.time()
+        if timer:
+            ttimer=time.time()
     (r, ic, rates, frozenvars, functions,assignments, filename)=solver.readmodel(INFILE=inputfile)
     
  
@@ -160,17 +160,15 @@ Return value: when run=True (default)
     #print "rates:",rates
     #print "ic:", ic
     for rate in RATES:
-		if rate in rates:
-			rates[rate]=RATES[rate]
-		else:
-			print "Warning: unexpected parameter ",rate,\
-			" set in RATES not found in model was ignored."
+        if rate in rates:
+            rates[rate] = RATES[rate]
+        else:
+            print(("Warning: unexpected parameter ", rate, " set in RATES not found in model was ignored."))
     for variable in IC:
-		if variable in ic:
-			ic[variable]=IC[variable]
-		else:
-			print "Warning: unexpected variable ", variable,\
-			" set in IC not found model was ignored."
+        if variable in ic:
+            ic[variable] = IC[variable]
+        else:
+            print(("Warning: unexpected variable ", variable, " set in IC not found model was ignored."))
     #print "rates:",rates
     #print "ic:", ic
 		
@@ -193,34 +191,34 @@ Return value: when run=True (default)
 		#
 		# extract the assignment statement itself
 		#
-		setequal=ass.find("=")
-		setvar=ass[:setequal].strip()
-		set_rhs=ass[setequal+1:]
+        setequal=ass.find("=")
+        setvar=ass[:setequal].strip()
+        set_rhs=ass[setequal+1:]
 		#print "Cellerator>Solve>assigned var:",setvar, setvar in variables
 		#
 		# Extract the rate constants that are in this assignment statement
 		# Note: variables in RHS expression that are not rates will be missed
 		# 
-		if setvar in variables:
-			svarindex = variables.index(setvar)
-			#print "Cellerator>Solve>",setvar, "is variable",svarindex,"in",variables
-			#print "Cellerator > assignreplace > set_rhs: ", set_rhs
-			# 
-			# variables in assginment statement
-			#
-			vars_on_rhs=set(re.split("[\)\(\[\]<>\*\+-]|\s", set_rhs))
-			# 
-			# variables that are rates
-			#
-			ratestoset = ratekeys.intersection(vars_on_rhs)
-			#
-			# save the name of the rate needed
-			#
-			ratesneeded |= ratestoset
-			#
-			# save the assignment statement for later
-			assignreplace=True
-			assign_replace_info.append([svarindex,set_rhs])
+        if setvar in variables:
+            svarindex = variables.index(setvar)
+            #print "Cellerator>Solve>",setvar, "is variable",svarindex,"in",variables
+            #print "Cellerator > assignreplace > set_rhs: ", set_rhs
+            # 
+            # variables in assginment statement
+            #
+            vars_on_rhs=set(re.split("[\)\(\[\]<>\*\+-]|\s", set_rhs))
+            # 
+            # variables that are rates
+            #
+            ratestoset = ratekeys.intersection(vars_on_rhs)
+            #
+            # save the name of the rate needed
+            #
+            ratesneeded |= ratestoset
+            #
+            # save the assignment statement for later
+            assignreplace=True
+            assign_replace_info.append([svarindex,set_rhs])
 	
 	#
 	# Generate a list of extra python commands to write to the 
@@ -248,8 +246,8 @@ Return value: when run=True (default)
     try:
         os.remove(tmpdotpy)
     except:
-        print "Warning: unable to remove the file "+os.path.abspath(tmpdotpy)+"\n+"\
-        +"Perhaps an authorization issue? You do not need to keep this file\nand it may be deleted"
+        print(("Warning: unable to remove the file "+os.path.abspath(tmpdotpy)+"\n+"\
+        +"Perhaps an authorization issue? You do not need to keep this file\nand it may be deleted"))
     #
     # name the solver program
     #
@@ -288,7 +286,7 @@ Return value: when run=True (default)
     f.write("\n\n\n")
     f.write("def thesolver():\n")
     f.write("    filename =\""+filename+"\"\n")
-    svars = str(map(utils.deindex, map(str, variables)))
+    svars = str(list(map(utils.deindex, list(map(str, variables)))))
     
 		
     
@@ -302,8 +300,8 @@ Return value: when run=True (default)
     
     if len(scan)>0:		
         if scanparameter in variables:
-		    ic_index=variables.index(scanparameter)
-		    varscan=True
+            ic_index=variables.index(scanparameter)
+            varscan=True
         else:
             f.write("    global " + scanparameter + "\n")
             varscan=False
@@ -311,7 +309,7 @@ Return value: when run=True (default)
         f.write("    "+scanparameter+"="+str(scanstart)+"\n")
         f.write("    while "+ scanparameter+" <= " + str(scanstop) + ":\n") 
         if varscan:
-			f.write("        y0["+str(ic_index)+"]="+scanparameter+"\n")
+            f.write("        y0["+str(ic_index)+"]="+scanparameter+"\n")
      
         f.write("        sol = odeint(ode_function_rhs, y0, times, mxstep="+str(mxstep)+")\n") 
         f.write("        "+scanparameter+"+="+str(scandelta)+"\n")
@@ -320,26 +318,26 @@ Return value: when run=True (default)
         # f.write("        print res\n")
         f.write("    return results\n")
     else:   
-		f.write("    sol = odeint(ode_function_rhs, y0, times, mxstep="+str(mxstep)+")\n")   
-		# --- added 7/23/16 to make plotting work for variables in assign
-		if assignreplace:
-			# 
-			# replace held variables with assigned values in interpolation
-			#
-			# f.write("    print 'times', times\n")
-			for command in xtra_rate_commands:
-				f.write("    "+command+"\n")
-			for information in assign_replace_info:
-			    svarindex,set_rhs = information
-			    # print svarindex, set_rhs
-			    # f.write("    print 'values:', sol[:,"+str(svarindex)+"]\n")
-	
-			    f.write("    result=["+set_rhs+" for t in times]\n")
-			    # f.write("    print result\n")
-			    f.write("    sol[:,"+str(svarindex)+"]=result\n")
+        f.write("    sol = odeint(ode_function_rhs, y0, times, mxstep="+str(mxstep)+")\n")   
+        # --- added 7/23/16 to make plotting work for variables in assign
+        if assignreplace:
+            # 
+            # replace held variables with assigned values in interpolation
+            #
+            # f.write("    print 'times', times\n")
+            for command in xtra_rate_commands:
+                f.write("    "+command+"\n")
+            for information in assign_replace_info:
+                svarindex,set_rhs = information
+                # print svarindex, set_rhs
+                # f.write("    print 'values:', sol[:,"+str(svarindex)+"]\n")
+    
+                f.write("    result=["+set_rhs+" for t in times]\n")
+                # f.write("    print result\n")
+                f.write("    sol[:,"+str(svarindex)+"]=result\n")
 		# ---- end addition 7/23/16	
 	
-		f.write("    return sol\n\n")
+        f.write("    return sol\n\n")
     #
     # write main program
     #
@@ -377,49 +375,49 @@ Return value: when run=True (default)
     # the solution - one variable per column. 
     # The first column gives the parameter scan from start to finish
     # each column j gives the value of variable j-1 at the end of the run  
-	    return (variables, temporary_solution)		
+        temporary_solution = None  # Define temporary_solution before returning it
+        return (variables, temporary_solution)
     else:
-	# return a tuple with a list of times (row headers)
-    # names of the variables (column headers)
-    # the solution - one variable per column. Each column is the time course for the corresponding variable in variables
-    #  
-		return (times, variables, temporary_solution)
+        # return a tuple with a list of times (row headers)
+        # names of the variables (column headers)
+        # the solution - one variable per column. Each column is the time course for the corresponding variable in variables
+        return (times, variables, temporary_solution)
 		
 ###########################################################################
 def SetAx(ax, scales=(), lims=(), labels=()):
     if scales!=():			 
-		try:
-			ax.set_xscale(scales[0])
-		except:
-			pass
-		try:
-			ax.set_yscale(scales[1])
-		except:
-			pass
-    if lims!=():		 
-		try:
-			ax.set_xlim(lims[0:2])
-		except:
-			pass
-		try:
-			ax.set_ylim(lims[2:4])
-		except:
-			pass
-    if labels!=():
-		try:
-			ax.set_xlabel(labels[0])
-		except:
-			pass
-		try:
-			 ax.set_ylabel(labels[1])
-		except:
-			pass
-		try:
-			ax.set_title(labels[2])
-		except:
-			pass
-
-    return ax
+        try:
+            ax.set_xscale(scales[0])
+        except:
+            pass
+        try:
+            ax.set_yscale(scales[1])
+        except:
+            pass
+        if lims!=():         
+            try:
+                ax.set_xlim(lims[0:2])
+            except:
+                pass
+            try:
+                ax.set_ylim(lims[2:4])
+            except:
+                pass
+        if labels!=():
+            try:
+                ax.set_xlabel(labels[0])
+            except:
+                pass
+            try:
+                ax.set_ylabel(labels[1])
+            except:
+                pass
+            try:
+                ax.set_title(labels[2])
+            except:
+                pass
+    
+        return ax
 
 
 ######################################################	
@@ -435,17 +433,17 @@ def ParametricScanPlot(v,s,k,variable,marker="",color="brown", bg="antiquewhite"
     return value: axis instance
     """
     if size!=():
-		try:
-			x,y=size
-			PlotSize(x,y)
-		except:
-			pass	
+        try:
+            x, y = size
+            PlotSize(x, y)
+        except:
+            pass
 
-    figure,ax=plt.subplots()
+    figure, ax = plt.subplots()
     try:
         i=v.index(variable)
     except:
-        print "Variable ",variable,"not found in list", v
+        print(("Variable ",variable,"not found in list", v))
         return
 
     S=np.array(s)
@@ -470,19 +468,19 @@ def PlotVars(t,v,s,plotvars,bg="antiquewhite", size=(), scales=(), lims=(), labe
     return value: a matplotlib axis instance
     """
     if size!=():
-		try:
-			x,y=size
-			PlotSize(x,y)
-		except:
-			pass	
+        try:
+            x, y = size
+            PlotSize(x, y)
+        except:
+            pass
     
-    okinds=[]
+    okinds = []
     for variable in plotvars:
         try:
-            i=v.index(variable)
+            i = v.index(variable)
             okinds.append(i)
         except:
-            print "Error: ",variable," not found in solution. Variables are ",v
+            print("Error: ", variable, " not found in solution. Variables are ", v)
     nvars = len(okinds)       
     
     if nvars>0:
@@ -542,60 +540,62 @@ def PlotParametric(t,v,s,n,m, color="Red", size=(), scales=(), lims=(), labels=(
     color = any pyplot compatible color
     """
     if size!=():
-		try:
-			x,y=size
-			PlotSize(x,y)
-		except:
-			pass	
-
-    if isinstance(n, str):
-		try:
-			n=v.index(n)
-		except:
-			print "Requested variable "+n+" not found in ",v
-			return
-		xvar=s[:,n]
-		xlab=v[n]
-    elif isinstance(n, int):
-		try:
-			xvar=s[:,n]
-			xlab=v[n]
-		except:
-			print "Index",n,"out of bounds; there are only",len(v),"variables"
-			return
-    else:
-		print "Unable to identify variable ",n
-		return
-		
-    if isinstance(m, str):
-		try:
-			m=v.index(m)
-		except:
-			print "Requested variable "+m+" not found in ",v
-			return
-		yvar=s[:,m]
-		ylab=v[m]	
-    elif isinstance(m,int):
-		try:
-			yvar=s[:,m]
-			ylab=v[m]
-		except:
-			print "Index",m,"out of bounds; there are only",len(v),"variables"
-			return
-    else:
-		print "Unable to identifu variable",m
-		return
-		
-    fig,ax=plt.subplots()	
-    ax.plot(xvar,yvar, color=color)
+        try:
+            x, y = size
+            PlotSize(x, y)
+        except:
+            pass
     
-    thelabels=[xlab, ylab, ""]
-    if len(labels)>0:
-	    if labels[0]!="":  
-			thelabels[0]=labels[0]
-    if len(labels)>1:
-		if labels[1]!="":  thelabels[1]=labels[1]
-    if len(labels)>2:  thelabels[2]=labels[2]
+        if isinstance(n, str):
+            try:
+                n = v.index(n)
+            except:
+                print(("Requested variable " + n + " not found in ", v))
+                return
+            xvar = s[:, n]
+            xlab = v[n]
+        elif isinstance(n, int):
+            try:
+                xvar = s[:, n]
+                xlab = v[n]
+            except:
+                print(("Index", n, "out of bounds; there are only", len(v), "variables"))
+                return
+        else:
+            print(("Unable to identify variable ", n))
+            return
+    
+        if isinstance(m, str):
+            try:
+                m = v.index(m)
+            except:
+                print(("Requested variable " + m + " not found in ", v))
+                return
+            yvar = s[:, m]
+            ylab = v[m]
+        elif isinstance(m, int):
+            try:
+                yvar = s[:, m]
+                ylab = v[m]
+            except:
+                print(("Index", m, "out of bounds; there are only", len(v), "variables"))
+                return
+        else:
+            print(("Unable to identify variable", m))
+            return
+    
+        fig, ax = plt.subplots()
+        ax.plot(xvar, yvar, color=color)
+    
+        thelabels = [xlab, ylab, ""]
+        if len(labels) > 0:
+            if labels[0] != "":
+                thelabels[0] = labels[0]
+        if len(labels) > 1:
+            if labels[1] != "":
+                thelabels[1] = labels[1]
+        if len(labels) > 2:
+            thelabels[2] = labels[2]
     
     ax = SetAx(ax,scales=scales, lims=lims, labels=tuple(thelabels))
     
@@ -638,12 +638,12 @@ Input:
     """
     nvars=len(v)
     if size!=():
-		try:
-			x,y=size
-			PlotSize(x,y)
-		except:
-			pass	
-                
+        try:
+            x, y = size
+            PlotSize(x, y)
+        except:
+            pass
+
     if len(colors) < nvars:
         xcolors = getcolornames(nvars-len(colors))
         colors = colors+xcolors
@@ -769,7 +769,7 @@ def PrintSBML(xml):
 	"""
 	with open(xml,"r") as f:
 		sbml=f.readlines()
-		print "".join(sbml)  
+		print(("".join(sbml)))  
 		    
 ####################################################
 
@@ -794,4 +794,5 @@ def PrintMathematica(nb):
 	"""
 	with open(nb,"r") as f:
 		mathematica=f.readlines()
-		print "".join(mathematica)
+		print(("".join(mathematica)))
+

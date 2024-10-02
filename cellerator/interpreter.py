@@ -41,7 +41,7 @@
 # from pyparsing import *
 import os.path
 import sys
-from parser import Reaction,StripComments
+from cellerator.parser import Reaction,StripComments
 from sympy import *
 from expander import expand
 import datetime

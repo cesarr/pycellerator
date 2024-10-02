@@ -43,7 +43,7 @@
 # runSimulation(filename, duration=value, step=value)
 #
 import os.path, sys, datetime
-from parser import Reaction
+from cellerator.parser import Reaction
 from sympy import *
 import interpreter, utils
 import numpy as np

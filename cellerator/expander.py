@@ -34,7 +34,7 @@
 # Expand a reaction into its base constituent reactions 
 #
 import datetime
-from parser import *
+from cellerator.parser import *
 from utils import *
 from reader import readmodel
 from kMech import expandkMech

@@ -37,7 +37,7 @@ import datetime
 import os.path
 import sys
 from reader import readmodel
-from parser import Reaction,StripComments
+from cellerator.parser import Reaction,StripComments
 from utils import *
 import numpy as np
 from sympy import *

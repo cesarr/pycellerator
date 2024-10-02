@@ -4,7 +4,7 @@ from reader import *
 import interpreter
 import expander
 from sympy import *
-from parser import Reaction
+from cellerator.parser import Reaction
 #
 #
 # SBML Writer -- does not handle complete output
