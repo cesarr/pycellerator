@@ -217,8 +217,7 @@ class Reaction(object):
                 have = len(mods)
                 m = mods[:]
                 if have != need:
-                    print "Error: Expecting ", need," modifiers; found ", \
-                          have, " in reaction ", raw
+                    print("Error: Expecting ", need," modifiers; found ", have, " in reaction ", raw)
                     if have > need:
                         m = m[:need]
                 return m
@@ -295,9 +294,9 @@ class Reaction(object):
         def _errorCheckUSER():
             if self.arrowtype=="USER":
                 if len(self.rates)<5:
-                    print "Error: User Arrow "+str(self.raw).rstrip()+" has only "+\
-                        str(len(self.rates))+" User fields, 5 expected. Expected "+\
-                        "format is User[r, T, n, h, f]"
+                    print("Error: User Arrow " + str(self.raw).rstrip() + " has only " +\
+                        str(len(self.rates)) + " User fields, 5 expected. Expected " +\
+                        "format is User[r, T, n, h, f]")
             return
         #*************************************************************************
             
@@ -330,17 +329,17 @@ class Reaction(object):
                 nn = len(num); nd=len(den)
                 # check number of coefficients - default is zero
                 if nA>nn+1:
-                    print "Error: Too many Numerator coefficients in reaction "\
+                    print("Error: Too many Numerator coefficients in reaction "\
                         + str(self.raw).rstrip()\
-                        +"; expecting at most "+str(nn+1)+" but "+str(nA)+" found"
+                        +"; expecting at most "+str(nn+1)+" but "+str(nA)+" found")
                     A=A[:nn+1]
                 else:
                     while len(A)<nn+1:
                         A.append(0)
                 if nD>nd+1:
-                    print "Error: Too many Denominator coefficients in reaction "\
+                    print ("Error: Too many Denominator coefficients in reaction "\
                         + str(self.raw).rstrip()\
-                        +"; expecting at most "+str(nd+1)+" but "+str(nD)+" found"
+                        +"; expecting at most "+str(nd+1)+" but "+str(nD)+" found")
                     D=D[:nd+1]
                 else:
                     while len(D)<nd+1:
@@ -348,17 +347,17 @@ class Reaction(object):
                 
                 # check exponents - default is 1
                 if nN>nn+1:
-                    print "Error: Too many Numerator exponents in reaction "\
+                    print("Error: Too many Numerator exponents in reaction "\
                         + str(self.raw).rstrip() \
-                        +"; expecting at most "+str(nn+1)+" but "+str(nN) +" found"
+                        +"; expecting at most "+str(nn+1)+" but "+str(nN) +" found")
                     N = N[:nn+1]
                 else:
                     while len(N)<nn+1:
                         N.append(1)                      
                 if nM>nd+1:
-                    print "Error: Too many Denominator exponents in reaction "\
+                    print ("Error: Too many Denominator exponents in reaction "\
                         + str(self.raw).rstrip() \
-                        +"; expecting at most "+str(nd+1)+" but "+str(nM) +" found"
+                        +"; expecting at most "+str(nd+1)+" but "+str(nM) +" found")
                     M = M[:nd]
                 else:
                     while len(M)<nd+1:
@@ -541,8 +540,7 @@ class Reaction(object):
                                 # expression = sympify(s[1:-1],locals=locals())
                                 expression = sympify(s, locals=locals())
                             except:
-                                print "Error: Parser: Unable to sympify the math "\
-                                    "expression " + s
+                                print("Error: Parser: Unable to sympify the math expression " + s)
                                 
                 return
                 
@@ -674,9 +672,9 @@ class Reaction(object):
                 
                 
             else:
-                print "Error: CheckCascade: The reaction '" + self.raw +\
+                print("Error: CheckCascade: The reaction '" + self.raw +\
                     "' appears to be an improperly formatted cascade. Check to "+\
-                    " make sure all the arrows are the same." 
+                    " make sure all the arrows are the same.") 
             # print "checkcascade: ", arrow, " iscascade: ", iscascade
                 
             return iscascade
